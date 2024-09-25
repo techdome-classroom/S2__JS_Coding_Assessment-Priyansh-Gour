@@ -3,28 +3,26 @@
  * @return {boolean}
  */
 var isValid = function(s) {
-    const stack = [];
-    const map = {
-        ')': '(',
-        '}': '{',
-        ']': '['
-    };
+    const stack = []; 
 
-    for (let i = 0; i < s.length; i++) {
-        let char = s[i];
+        for (let c of s) {
+            if (c === '(' || c === '{' || c === '[') {
+                stack.push(c); 
+            } else {
+                
+                if (stack.length === 0) {
+                    return false; 
+                }
 
-        if (map[char]) {
-            let topElement = stack.length > 0 ? stack.pop() : '#';
-
-            if (topElement !== map[char]) {
-                return false;
+                const top = stack.pop(); 
+                if ((c === ')' && top !== '(') ||
+                    (c === '}' && top !== '{') ||
+                    (c === ']' && top !== '[')) {
+                    return false; 
+                }
             }
-        } else {
-            stack.push(char);
         }
-    }
-
-    return stack.length === 0;
+        return stack.length === 0;
 };
 
 module.exports = { isValid };
